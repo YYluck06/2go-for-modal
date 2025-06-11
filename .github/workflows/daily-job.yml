@@ -1,0 +1,24 @@
+name: Daily Auto Task
+
+on:
+  schedule:
+    # 每天 UTC 时间 00:00 执行（北京时间 08:00）
+    - cron: '0 0 * * *'
+    
+  # 允许手动触发
+  workflow_dispatch:
+
+jobs:
+  daily-task:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Run daily task
+        run: |
+          echo "🕒 任务开始时间: $(date)"
+          python deploy.py
+          echo "✅ 每日任务执行完成"
+          echo "📅 下次执行时间: $(date -d '+1 day' '+%Y-%m-%d %H:%M')"
